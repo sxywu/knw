@@ -1,0 +1,8 @@
+{
+  "name": "knw",
+  "version": "0.1.0",
+  "dependencies": {},
+  "devDependencies": {
+    "subtitles-parser": "0.0.2"
+  }
+}
