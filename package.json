@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "dependencies": {},
   "devDependencies": {
+    "json2csv": "^4.0.1",
     "subtitles-parser": "0.0.2"
   }
 }
