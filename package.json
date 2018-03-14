@@ -10,6 +10,9 @@
     "build": "node build/build.js"
   },
   "dependencies": {
+    "csv-loader": "^2.1.1",
+    "d3": "^4.13.0",
+    "subtitle": "^1.2.0",
     "vue": "^2.5.2",
     "vue-router": "^3.0.1"
   },
