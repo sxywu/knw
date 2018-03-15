@@ -84,6 +84,15 @@ module.exports = {
           skipEmptyLines: true
         }
       },
+      {
+        test: /\.(glsl|vs|fs)$/,
+        loader: 'shader-loader',
+        options: {
+          glsl: {
+            chunkPath: resolve("/glsl/chunks")
+          }
+        }
+      }
     ]
   },
   node: {
