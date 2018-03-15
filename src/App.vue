@@ -1,12 +1,20 @@
 <template>
-  <div id="app">
-    Hello World
-  </div>
+  <Timeline :data='subtitles' />
 </template>
 
 <script>
+import Timeline from './components/Timeline';
+import subtitles from './assets/gathered_data.csv';
 export default {
-  name: 'App'
+  name: 'App',
+  components: {
+    Timeline,
+  },
+  data() {
+    return {
+      subtitles,
+    };
+  },
 }
 </script>
 
