@@ -2,14 +2,17 @@
   <div>
     <svg :width='width' :height='height'>
       <g id='timeline'>
+        <rect v-for='d in sceneData' fill='#cfcfcf' stroke='#666' stroke-width='0.5'
+          :x='d.x1' y='40' :width='d.x2 - d.x1' height='20'
+          @mouseover='hoverLine(d)'></rect>
         <rect v-for='d in timelineData' :fill='d.color'
           :x='d.x1' y='20' :width='d.x2 - d.x1' height='20'
           @mouseover='hoverLine(d)'></rect>
       </g>
     </svg>
     <div>
-      <h3>{{ hoveredLine.char }}</h3>
-      <div v-for='t in hoveredLine.text'>{{ t }}</div>
+      <h3>{{ hovered.Character || hovered.scene}}</h3>
+      <div v-for='t in hovered.text'>{{ t }}</div>
     </div>
   </div>
 </template>
@@ -28,7 +31,7 @@ export default {
     return {
       width: window.innerWidth,
       height: 60,
-      hoveredLine: {},
+      hovered: {},
     };
   },
   computed: {
@@ -63,19 +66,40 @@ export default {
         } else if (_.includes(d.Character, 'たき')) {
           color = 'rgb(81, 170, 232)';
         }
-        return {
+        return Object.assign(d, {
           x1: this.xScale(d.startTime),
           x2: this.xScale(d.endTime),
           color,
-          char: d.Character,
-          text: d.text,
+        });
+      });
+    },
+    sceneData: function() {
+      const scenes = [];
+      let prev = null;
+      _.each(this.timelineData, d => {
+        // if it's the same Time, save to previous
+        if (prev && d.Time === prev.scene) {
+          prev.endTime = d.endTime;
+        } else {
+          d = {
+            startTime: d.startTime,
+            endTime: d.endTime,
+            scene: d.Time,
+          };
+          scenes.push(d);
+          prev = d;
         }
       });
+
+      return _.map(scenes, d => Object.assign(d, {
+        x1: this.xScale(d.startTime),
+        x2: this.xScale(d.endTime),
+      }));
     }
   },
   methods: {
     hoverLine(d) {
-      this.hoveredLine =  d;
+      this.hovered =  d;
     }
   }
 }
