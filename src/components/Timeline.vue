@@ -2,7 +2,8 @@
   <div>
     <svg :width='width' :height='height'>
       <g id='timeline'>
-        <rect v-for='d in sceneData' fill='#cfcfcf' stroke='#666' stroke-width='0.5'
+        <rect v-for='d in sceneData' :fill='d.color'
+          fill-opacity='0.5' stroke='#666' stroke-width='0.5'
           :x='d.x1' y='40' :width='d.x2 - d.x1' height='20'
           @mouseover='hoverLine(d)'></rect>
         <rect v-for='d in timelineData' :fill='d.color'
@@ -91,10 +92,21 @@ export default {
         }
       });
 
-      return _.map(scenes, d => Object.assign(d, {
-        x1: this.xScale(d.startTime),
-        x2: this.xScale(d.endTime),
-      }));
+      return _.map(scenes, d => {
+        let color = '#999';
+        if (_.includes(d.scene, 'Past 2')) {
+          color = 'rgb(230, 143, 195)';
+        } else if (_.includes(d.scene, 'Past 1')) {
+          color = 'rgb(81, 170, 232)';
+        } else if (d.scene === 'Twilight') {
+          color = 'yellow';
+        }
+        return Object.assign(d, {
+          x1: this.xScale(d.startTime),
+          x2: this.xScale(d.endTime),
+          color,
+        });
+      });
     }
   },
   methods: {
