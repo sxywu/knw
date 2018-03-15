@@ -8,7 +8,8 @@
       </g>
     </svg>
     <div>
-      {{ hoveredLine }}
+      <h3>{{ hoveredLine.char }}</h3>
+      <div v-for='t in hoveredLine.text'>{{ t }}</div>
     </div>
   </div>
 </template>
@@ -27,19 +28,35 @@ export default {
     return {
       width: window.innerWidth,
       height: 60,
-      hoveredLine: '',
+      hoveredLine: {},
     };
   },
   computed: {
     timelineData: function() {
+      const data = []; // final timeline data
+      let prev = null;
+      _.each(this.data, d => {
+        Object.assign(d, {
+          startTime: toMS(d.startTime),
+          endTime: toMS(d.endTime),
+        });
+        if (prev && d.Character === prev.Character && d.startTime - prev.endTime < 1000) {
+          // if same character speaking AND it's within same second
+          // then append it to previous line
+          prev.endTime = d.endTime;
+          prev.text.push(d.text);
+        } else {
+          // if first line, or different character speaking
+          d.text = [d.text];
+          data.push(d);
+          prev = d;
+        }
+      });
+
       this.xScale = d3.scaleLinear().range([0, this.width]);
-      _.each(this.data, d => Object.assign(d, {
-        startTime: toMS(d.startTime),
-        endTime: toMS(d.endTime),
-      }));
       this.xScale.domain([this.data[0].startTime, _.last(this.data).endTime]);
 
-      return _.map(this.data, d => {
+      return _.map(data, d => {
         let color = '#999';
         if (_.includes(d.Character, 'みつは')) {
           color = 'rgb(230, 143, 195)';
@@ -50,14 +67,15 @@ export default {
           x1: this.xScale(d.startTime),
           x2: this.xScale(d.endTime),
           color,
-          text: `${d.Character}: ${d.text}`,
+          char: d.Character,
+          text: d.text,
         }
       });
     }
   },
   methods: {
     hoverLine(d) {
-      this.hoveredLine = d.text;
+      this.hoveredLine =  d;
     }
   }
 }
