@@ -104,9 +104,9 @@ export default {
 
       this.timelineData = _.map(data, d => {
         let color = '#999';
-        if (_.includes(d.Character, 'みつは')) {
+        if (d.Character === 'みつは') {
           color = 'rgb(230, 143, 195)';
-        } else if (_.includes(d.Character, 'たき')) {
+        } else if (d.Character === 'たき') {
           color = 'rgb(81, 170, 232)';
         }
         return Object.assign(d, {
