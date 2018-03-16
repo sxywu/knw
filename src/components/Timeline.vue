@@ -26,11 +26,12 @@
         <g ref='dates'></g>
       </g>
       <g id='plots'>
-        <text v-for='d in plotData' :x='d.x1' y='20' text-anchor='middle'>*</text>
+        <text v-for='d in plotData' :x='d.x' :y='d.y' :fill='d.color'
+          text-anchor='middle' @mouseover='hoverLine(d)'>*</text>
       </g>
     </svg>
     <div>
-      <h3>{{ hovered.Character || hovered.scene}}</h3>
+      <h3>{{ hovered.plot || hovered.Character || hovered.scene}}</h3>
       <div v-for='t in hovered.text'>{{ t }}</div>
     </div>
   </div>
@@ -233,7 +234,16 @@ export default {
     },
     calculatePlots() {
       this.plotData = _.chain(this.data)
-        .filter(d => _.includes(d['Plot arc'].toLowerCase(), 'memory'))
+        .filter(d => _.includes(d['Plot arc'].toLowerCase(), 'memory') ||
+          _.includes(d['Plot arc'].toLowerCase(), 'string'))
+        .map(d => {
+          const memory = _.includes(d['Plot arc'].toLowerCase(), 'memory');
+          return {
+            plot: d['Plot arc'],
+            x: d.x1, y: memory ? 10 : 20,
+            color: memory ? 'rgb(81, 170, 232)' : 'rgb(230, 143, 195)',
+          };
+        })
         .value();
     },
     hoverLine(d) {
@@ -244,7 +254,7 @@ export default {
 </script>
 
 <style scoped>
-  rect {
+  rect, #plots text {
     cursor: pointer;
   }
   tspan {
