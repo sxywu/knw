@@ -58,6 +58,7 @@ export default {
       timelineData: [],
       sceneData: [],
       splitTimeline: [],
+
       links: [],
       hovered: {},
     };
@@ -147,14 +148,17 @@ export default {
     },
     calculateSplitTimeline: function() {
       const dateWidths = {}; // remember the dates' width
-      const split = {'Past 1': {}, 'Past 2': {}, 'Past 2B': {}, 'Present': {}};
+      const split = {'Past 1': {}, 'Past 2': {}, 'Past 2B': {}};
       _.chain(this.sceneData)
         .map(d => {
           let [time, date] = d.scene.split(', ');
+          if (_.includes(time, 'Flashback')) {
+            time = time.split(' // ')[1];
+          }
           if (!split[time] || !date) return;
           return Object.assign(d, {time, date});
         }).filter()
-        .sortBy(d => new Date(d.date === 'spring' ? '4/8/2002' : d.date))
+        .sortBy(d => new Date(d.date))
         .each(d => {
           let times = split[d.time][d.date];
           if (!times) {
@@ -222,6 +226,9 @@ export default {
         })
       });
       this.links = links;
+    },
+    calculatePlots() {
+
     },
     hoverLine(d) {
       this.hovered =  d;
