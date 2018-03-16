@@ -1,6 +1,6 @@
 <template>
   <div>
-    <svg :width='width' :height='height'>
+    <svg :width='width' :height='height' style='overflow:visible'>
       <g id='links'>
         <path v-for='d in links' :d='d.path' :fill='d.color'
           fill-opacity='0.25' stroke='#666' stroke-width='0.25'></path>
@@ -24,6 +24,9 @@
           </g>
         </g>
         <g ref='dates'></g>
+      </g>
+      <g id='plots'>
+        <text v-for='d in plotData' :x='d.x1' y='20' text-anchor='middle'>*</text>
       </g>
     </svg>
     <div>
@@ -53,12 +56,12 @@ export default {
   props: ['data'],
   data() {
     return {
-      width: window.innerWidth,
+      width: window.innerWidth - 16,
       height: 600,
       timelineData: [],
       sceneData: [],
       splitTimeline: [],
-
+      plotData: [],
       links: [],
       hovered: {},
     };
@@ -68,6 +71,7 @@ export default {
     this.calculateScenes();
     this.calculateSplitTimeline();
     this.calculateLinks();
+    this.calculatePlots();
 
     makeAnnotations.annotations(this.splitDates);
     d3.select(this.$refs.dates).call(makeAnnotations);
@@ -228,7 +232,9 @@ export default {
       this.links = links;
     },
     calculatePlots() {
-
+      this.plotData = _.chain(this.data)
+        .filter(d => _.includes(d['Plot arc'].toLowerCase(), 'memory'))
+        .value();
     },
     hoverLine(d) {
       this.hovered =  d;
