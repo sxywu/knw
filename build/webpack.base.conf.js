@@ -40,6 +40,8 @@ module.exports = {
   },
   module: {
     rules: [
+      { test: /\.(glsl|frag|vert)$/, loader: 'raw-loader', exclude: /node_modules/ },
+      { test: /\.(glsl|frag|vert)$/, loader: 'glslify-loader', exclude: /node_modules/ },
       ...(config.dev.useEslint ? [createLintingRule()] : []),
       {
         test: /\.vue$/,
@@ -84,7 +86,7 @@ module.exports = {
           skipEmptyLines: true
         }
       }
-    ]     
+    ]
   },
   node: {
     // prevent webpack from injecting useless setImmediate polyfill because Vue
