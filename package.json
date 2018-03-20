@@ -12,6 +12,8 @@
   "dependencies": {
     "csv-loader": "^2.1.1",
     "d3": "^4.13.0",
+    "glslify-loader": "^1.0.2",
+    "raw-loader": "^0.5.1",
     "subtitle": "^1.2.0",
     "three": "^0.91.0",
     "vue": "^2.5.2",
