@@ -1,3 +1,6 @@
+const shaderFiles = ['output.vert', 'output.frag'];
+const shaders = shaderFiles.map(file => require(`../../assets/glsl/${file}`));
+
 export default class Webgl{
   constructor(comets){
     // debugger
@@ -6,18 +9,13 @@ export default class Webgl{
 
     // this.$ele = this.comets.$el;
 
-    this.vertShader = [
-      fetch('/static/glsl/output.vert'),
-      fetch('/static/glsl/output.frag'),
-    ];
-
-    this.fragShader = [
-    ];
-
-    Promise.all(this.vertShader)
-      .then(responses => Promise.all(responses.map(res => res.text())))
-      .then(shader => {
-      });
+    // this.vertShader = [
+    //   fetch('/static/glsl/output.vert'),
+    //   fetch('/static/glsl/output.frag'),
+    // ];
+    //
+    // this.fragShader = [
+    // ];
 
     // const vert = require('./test.glsl');
     // console.log(vert);
