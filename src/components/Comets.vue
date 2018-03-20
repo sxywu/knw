@@ -4,6 +4,9 @@
 
 <script>
 import * as THREE from 'three';
+// import ResizeWatch from '../modules/comets/ResizeWatch';
+import Webgl from '../modules/comets/WebGL';
+
 function anotherFunction() {
   //
 }
@@ -16,10 +19,13 @@ export default {
     this.$el // canvas
     this.someFunction();
     anotherFunction();
+
+    // this.resizeWatch = new ResizeWatch();
+    this.webgl = new Webgl(this);
   },
   methods: {
     someFunction: function() {
-      //
+
     }
   }
 }

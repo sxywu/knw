@@ -83,17 +83,8 @@ module.exports = {
           header: true,
           skipEmptyLines: true
         }
-      },
-      {
-        test: /\.(glsl|vs|fs)$/,
-        loader: 'shader-loader',
-        options: {
-          glsl: {
-            chunkPath: resolve("/glsl/chunks")
-          }
-        }
       }
-    ]
+    ]     
   },
   node: {
     // prevent webpack from injecting useless setImmediate polyfill because Vue
