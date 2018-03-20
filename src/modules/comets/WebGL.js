@@ -7,19 +7,24 @@ export default class Webgl{
     // this.$ele = this.comets.$el;
 
     this.vertShader = [
-      '/src/glsl/output.vert',
+      fetch('/static/glsl/output.vert'),
+      fetch('/static/glsl/output.frag'),
     ];
 
     this.fragShader = [
-      '/src/glsl/output.frag',
     ];
+
+    Promise.all(this.vertShader)
+      .then(responses => Promise.all(responses.map(res => res.text())))
+      .then(shader => {
+      });
 
     // const vert = require('./test.glsl');
     // console.log(vert);
 
     // for(let i = 0; i < this.vertShader.length; i++){
     //   // const src = this.vertShader[i];
-      
+
     //   // this.vertShader[i] = vert;
     //   // console.log(vert);
     // }
@@ -37,7 +42,7 @@ export default class Webgl{
   //   this.aspect = this.width / this.height;
   //   this.setProps();
 
-  //   this.renderer = new THREE.WebGLRenderer( { 
+  //   this.renderer = new THREE.WebGLRenderer( {
   //     antialias: true,
   //     alpha: true,
   //     canvas: this.$ele
@@ -54,7 +59,7 @@ export default class Webgl{
   //   var cameraZ = (this.props.height / 2) / Math.tan((this.props.fov * Math.PI / 180) / 2);
   //   this.camera.position.set(0, 0, cameraZ);
   //   this.camera.lookAt(this.scene.position);
-    
+
 
   //   this.time = new THREE.Clock();
   //   this.render();
